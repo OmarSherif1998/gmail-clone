@@ -13,17 +13,24 @@ import DuoIcon from '@mui/icons-material/Duo';
 import CallIcon from '@mui/icons-material/Call';
 import { Button } from '@mui/material';
 import SidebarOptions from './SidebarOptions';
+import { useDispatch } from 'react-redux';
+import { openSendMessage } from '../features/mailSlice';
 
 function Sidebar() {
+  const dispatch = useDispatch();
   return (
     <div className="sidebar">
-      <Button startIcon={<AddIcon />} className="sidebar__compose">
+      <Button
+        startIcon={<AddIcon />}
+        className="sidebar__compose"
+        onClick={() => dispatch(openSendMessage())}
+      >
         Compose
       </Button>
 
       <SidebarOptions
         Icon={<InboxIcon />}
-        title="inbox"
+        title="Inbox"
         number={200}
         selected={true}
       />

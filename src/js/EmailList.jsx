@@ -1,7 +1,8 @@
-import React from 'react';
 import '../css/EmailList.css';
+import React, { useEffect, useState } from 'react';
 import Section from './Section';
 import EmailRow from './EmailRow';
+import { db } from './firebase';
 import RedoIcon from '@mui/icons-material/Redo';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
@@ -17,6 +18,23 @@ import {
 } from '@mui/icons-material';
 
 function EmailList() {
+  const [emails, setEmails] = useState([]);
+
+  useEffect(() => {
+    db.collection('emails')
+      .orderBy('timestamp', 'desc')
+      .onSnapshot((snapshot) =>
+        setEmails(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        )
+      );
+  });
+  // This peice of code give us a snapshot of the database and everytime the database gets updated,
+  // a new snapshot is provided and the code get ran again to populate the emailList with the new emails that were added to the database
+
   return (
     <div className="emailList">
       <div className="emailList__settings">
@@ -55,12 +73,18 @@ function EmailList() {
         <Section Icon={<LocalOfferIcon />} title="Promotitions" color="green" />
       </div>
       <div className="emailList__list">
-        <EmailRow
-          title={'Twitch'}
-          subject={'Batfleck went live ! '}
-          desc={'This is a test mail'}
-          time="10pm"
-        />
+        {emails.map(
+          ({ id, data: { reciver, subject, message, timestamp } }) => (
+            <EmailRow
+              id={id}
+              key={id}
+              title={reciver}
+              subject={subject}
+              desc={message}
+              time={new Date(timestamp.seconds * 1000).toUTCString().trim()}
+            />
+          )
+        )}
       </div>
     </div>
   );

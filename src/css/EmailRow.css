@@ -1,6 +1,7 @@
 .emailRow {
   display: flex;
   align-items: center;
+  gap: 25px;
   height: 50px;
   border-bottom: 1px solid whitesmoke;
   cursor: pointer;
@@ -23,7 +24,7 @@
   font-size: 13px;
 }
 .emailRow__message > h4 {
-  width: 400px;
+  width: 40%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -32,7 +33,7 @@
 }
 
 .emailRow__title {
-  flex: 0.3;
+  flex: 0.2;
   font-size: 15px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
